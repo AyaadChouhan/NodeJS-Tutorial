@@ -1,0 +1,63 @@
+CommonJS vs ES Modules: A Comparison...
+
+CommonJS (CJS):
+
+Origin: Developed for server-side JavaScript in Node.js.
+Purpose: Provides a modular system for organizing code into separate files.
+Usage: Commonly used in Node.js environments before ES Modules became widely supported.
+ES Modules (ESM):
+
+Origin: Introduced in ECMAScript 2015 (ES6) for standardized modular code in both client-side and server-side JavaScript.
+Purpose: To provide a cleaner and standardized approach to modularizing JavaScript code.
+Usage: Supported natively in modern browsers and Node.js (with "type": "module" in package.json).
+
+
+
+===================================================================
+CommonJS Syntax:
+Exporting:
+
+// Exporting a function or object in CommonJS
+const add = (a, b) => a + b;
+module.exports = add;
+
+Importing:
+// Importing module in CommonJS
+const add = require('./module');
+console.log(add(2, 3));  // Output: 5
+
+
+===================================================================
+CommonJS Syntax:
+Exporting:
+
+// Exporting a function or object in ESModule/ESM
+export const add = (a, b) => a + b;
+
+
+Importing:
+// Importing module in CommonJS
+
+<!-- import { add, multiply } from './module.js'; --> in this one way we can access properties for module but if we have 10 or 20 method so it is not a good way to import properties.
+
+
+<!-- import * as Label from './PathOfModule...' --> you can see * asterics inside the ESM import statement mean we can access the whole properties of module with the use of only one thing which is asterisc.
+
+both ways are correct.
+
+console.log(label.add(2, 3));  // Output: 5
+
+===================================================================
+When to Use Each?
+Use CommonJS:
+
+When working with legacy Node.js code or modules that do not support ES Modules.
+If your code is intended to run purely on Node.js (not needing browser support).
+Use ES Modules:
+
+For modern JavaScript development, especially for code that needs to run in both Node.js and the browser.
+To take advantage of asynchronous loading and live bindings.
+For new projects aiming for standardization and compatibility with modern browsers.
+
+===================================================================
+Note: Both CommonJS and ES Modules offer different ways to modularize JavaScript code. CommonJS is synchronous and suited for server-side applications in Node.js, while ES Modules are more flexible, with asynchronous loading and browser compatibility. ES Modules are the future standard and should be preferred for new projects, especially if you plan to share code across both server-side and client-side environments.
