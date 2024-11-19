@@ -1,0 +1,5 @@
+What is Node.js Runtime?
+
+Node.js runtime is a JavaScript runtime environment that executes JavaScript code outside the browser.
+Built on Google Chrome's V8 JavaScript engine, which compiles JavaScript into machine code.
+Allows developers to build server-side and networking applications.
