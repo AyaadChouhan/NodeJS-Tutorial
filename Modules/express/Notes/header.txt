@@ -1,0 +1,102 @@
+Headers are key-value pairs exchanged between the client (browser or other HTTP client) and the server in an HTTP request or response.
+They provide metadata about the request or response, such as the type of content being sent, authentication tokens, cookies, or status information.
+
+In Node.js, headers can be accessed and set in both the request and response objects,
+ making them essential for managing HTTP communication.
+
+Headers are an integral part of HTTP communication in Node.js. 
+They allow for the exchange of metadata and control over how the request and response should be handled.
+By understanding how to read, set
+
+
+Types of Headers
+Request Headers: Sent by the client to the server to provide additional information about the request.
+Examples: Content-Type, Authorization, Accept.
+
+Response Headers: Sent by the server to the client to provide metadata about the response.
+Examples: Content-Type, Content-Length, Set-Cookie.
+
+=================================================
+
+Working with Headers in Node.js
+1. Accessing Request Headers
+The request headers are available in the req.headers object in Node.js. It contains all the headers sent by the client.
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  console.log("Request Headers:", req.headers);
+
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Check your console for headers!");
+});
+
+server.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
+
+=================================================
+
+Setting Response Headers
+To send headers to the client, you can use the res.setHeader() method in Node.js or the res.header() method in Express.
+
+Example in Node.js:
+
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Custom-Header", "LearningHeaders");
+
+  res.writeHead(200); // OK status
+  res.end(JSON.stringify({ message: "Headers example" }));
+});
+
+server.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
+
+
+===============================================
+
+Reading and Writing Headers in Express
+Reading Request Headers
+You can access request headers using req.headers or specific methods like req.get().
+
+Example:
+
+app.get("/", (req, res) => {
+  console.log("All Headers:", req.headers);
+  console.log("User-Agent:", req.get("User-Agent"));
+  res.send("Headers logged!");
+});
+Setting Response Headers
+Use res.set() or res.header() to set response headers.
+
+Example:
+
+app.get("/set-headers", (req, res) => {
+  res.set("Custom-Header", "NodeJsHeaders");
+  res.send("Custom headers added!");
+});
+Removing Headers
+Use res.removeHeader() in Node.js to remove a specific header.
+
+Example:
+
+res.removeHeader("Custom-Header");
+Best Practices with Headers
+Use Proper Content-Type: Always set the Content-Type header to match the type of data being sent (e.g., JSON, HTML, plain text).
+
+Secure Your Application: Use security headers like:
+
+Strict-Transport-Security to enforce HTTPS.
+X-Content-Type-Options to prevent MIME type sniffing.
+X-Frame-Options to prevent clickjacking.
+Avoid Overwriting Important Headers: Be careful not to overwrite system-critical headers like Content-Length or Content-Type.
+
+Use Middleware for Common Headers: Use libraries like helmet in Express to manage security headers automatically.
+
+Example:
+
+const helmet = require("helmet");
+app.use(helmet());

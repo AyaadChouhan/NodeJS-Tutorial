@@ -1,0 +1,177 @@
+HTTP Status Codes in Node.js
+HTTP status codes play a crucial role in providing meaningful feedback for HTTP requests. By setting the right status codes, you can inform the client (browser, API consumer, etc.) about the success or failure of their requests. Express.js makes it easy to work with status codes through the res.status() method.
+
+HTTP Status Codes are part of the HTTP protocol and are used by servers to communicate the outcome of a request. Each status code is a three-digit number that indicates the result of a request.
+
+In Node.js, when you send a response using the res object in Express.js, you often need to set the appropriate status code to indicate whether the request was successful or encountered an error.
+
+==============================================================
+
+Categories of HTTP Status Codes
+HTTP status codes are categorized into five groups:
+
+1xx (Informational)
+These codes indicate that the request has been received and the server is processing it. These are rarely used in practice.
+
+2xx (Success)
+These codes indicate that the request was successfully received, understood, and accepted by the server.
+
+3xx (Redirection)
+These codes indicate that further action is required to fulfill the request, often involving a redirection to another URL.
+
+4xx (Client Errors)
+These codes indicate that the request sent by the client was incorrect or cannot be processed.
+
+5xx (Server Errors)
+These codes indicate that the server failed to fulfill a valid request.
+
+==============================================================
+
+Implementations:-
+
+Commonly Used HTTP Status Codes in Express.js
+1. 2xx (Success) Codes
+200 OK
+The request was successful, and the server responded with the requested data.
+Example:
+
+app.get("/", (req, res) => {
+  res.status(200).send("Request was successful!");
+});
+=============================
+201 Created
+The request has been fulfilled, resulting in the creation of a new resource. This is commonly used after a POST request.
+Example:
+
+app.post("/create", (req, res) => {
+  res.status(201).send("Resource created successfully!");
+});
+=============================
+204 No Content
+The request was successful, but there is no content to send in the response. Often used for DELETE requests.
+Example:
+
+app.delete("/delete/:id", (req, res) => {
+  res.status(204).send();
+});
+=============================
+2. 3xx (Redirection) Codes
+301 Moved Permanently
+The requested resource has been permanently moved to a new URL.
+Example:
+
+app.get("/old-url", (req, res) => {
+  res.status(301).redirect("/new-url");
+});
+=============================
+302 Found
+The requested resource has been temporarily moved to another URL.
+Example:
+
+app.get("/temporary", (req, res) => {
+  res.status(302).redirect("/new-url-temporary");
+});
+=============================
+303 See Other
+The server directs the client to retrieve the requested resource from another URL.
+Example:
+
+app.get("/submit", (req, res) => {
+  res.status(303).redirect("/confirmation");
+});
+=============================
+3. 4xx (Client Error) Codes
+400 Bad Request
+The server cannot process the request due to a client error (e.g., malformed request syntax).
+Example:
+
+app.post("/submit", (req, res) => {
+  if (!req.body.name) {
+    return res.status(400).send("Name is required!");
+  }
+  res.status(200).send("Request successful");
+});
+=============================
+401 Unauthorized
+The request requires user authentication, or the provided authentication is invalid.
+Example:
+
+app.get("/private", (req, res) => {
+  res.status(401).send("Unauthorized access");
+});
+=============================
+403 Forbidden
+The server understands the request but refuses to authorize it. The client does not have permission to access the resource.
+Example:
+
+app.get("/admin", (req, res) => {
+  res.status(403).send("Forbidden access");
+});
+=============================
+404 Not Found
+The requested resource could not be found on the server.
+Example:
+
+app.get("/unknown", (req, res) => {
+  res.status(404).send("Resource not found");
+});
+=============================
+405 Method Not Allowed
+The method used in the request is not allowed for the resource.
+Example:
+
+app.post("/submit", (req, res) => {
+  res.status(405).send("Method not allowed");
+});
+=============================
+4. 5xx (Server Error) Codes
+500 Internal Server Error
+The server encountered an unexpected condition that prevented it from fulfilling the request.
+Example:
+
+app.get("/error", (req, res) => {
+  res.status(500).send("Internal server error occurred");
+});
+=============================
+502 Bad Gateway
+The server, while acting as a gateway or proxy, received an invalid response from the upstream server.
+Example:
+
+app.get("/gateway-error", (req, res) => {
+  res.status(502).send("Bad gateway error");
+});
+=============================
+503 Service Unavailable
+The server is currently unable to handle the request due to temporary overload or maintenance.
+Example:
+
+app.get("/maintenance", (req, res) => {
+  res.status(503).send("Service is temporarily unavailable");
+});
+=============================
+504 Gateway Timeout
+The server, while acting as a gateway or proxy, did not get a response from the upstream server in time.
+Example:
+
+app.get("/timeout", (req, res) => {
+  res.status(504).send("Gateway timeout");
+});
+
+
+=============================================================
+How to Set Status Codes in Express
+In Express.js, you can use the res.status(code) method to set the status code for a response before sending it back to the client. After setting the status code, you can send a response using methods like res.send(), res.json(), or res.redirect().
+
+Example:
+
+app.get("/", (req, res) => {
+  res.status(200).send("Request was successful!");
+});
+
+app.get("/not-found", (req, res) => {
+  res.status(404).send("Page not found");
+});
+
+app.get("/server-error", (req, res) => {
+  res.status(500).send("Something went wrong on the server");
+});

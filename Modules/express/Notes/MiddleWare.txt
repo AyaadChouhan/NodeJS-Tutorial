@@ -1,0 +1,65 @@
+Middleware are functions in Express.js that have access to the request object (req),
+the response object (res), and the next middleware function (next) in the application’s request-response cycle.
+They can execute code, modify req/res, and call next() to pass control to the next middleware.
+we can apply middleware gloabally, and for specific endpoint whereever we want
+
+How Middleware Works
+Middleware functions take three arguments:
+
+req: The request object.
+res: The response object.
+next: A function that passes control to the next middleware in the stack.
+
+app.use((req, res, next) => {
+  console.log("Middleware executed");
+  next(); // this next method calls the next middlware below    
+});
+
+Application-level Middleware
+These middleware functions are defined directly in your app and execute for every request unless limited to specific routes.
+
+=========================================
+
+types of Middleware
+
+->built in middleware
+Commonly Used Built-in Middleware
+express.json()
+
+Parses incoming JSON payloads and makes them available in req.body.
+app.use(express.json());
+app.post("/data", (req, res) => {
+  res.send(`Received: ${JSON.stringify(req.body)}`);
+});
+express.urlencoded()
+
+Parses URL-encoded data (form submissions).
+app.use(express.urlencoded({ extended: true }));
+express.static()
+
+Serves static files like HTML, CSS, JavaScript, and images.
+app.use(express.static("public")); // Serve files from 'public' folder
+
+======================================================
+
+->custom middleware
+You can define custom middleware to handle specific application logic.
+app.use((req, res, next) => {
+  console.log(`[${new Date()}] ${req.method} ${req.url}`);
+  next(); // Pass control to the next middleware
+});
+
+->built in middleware
+Express provides some pre-defined middleware for common tasks.
+
+express.json(): Parses JSON request bodies.
+express.urlencoded(): Parses URL-encoded request bodies.
+express.static(): Serves static files (e.g., HTML, CSS).
+
+
+Key Points to Remember
+Middleware functions are executed in the order they are defined.
+Always call next() unless you want to end the request-response cycle.
+Use express.json() and express.urlencoded() for parsing request bodies.
+Custom middleware can simplify repetitive tasks like authentication or logging.
+Error-handling middleware must always be placed at the end.
