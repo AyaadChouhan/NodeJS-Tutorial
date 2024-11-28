@@ -1,0 +1,52 @@
+What is libuv?
+libuv is a multi-platform library at the core of Node.js.
+It provides the event loop, thread pool, and other low-level mechanisms to handle asynchronous non-blocking tasks efficiently.
+
+======================================
+Key Responsibilities of libuv
+
+Event Loop...
+libuv runs the event loop, which manages asynchronous tasks like network I/O, timers, and callbacks.
+Tasks are processed in phases (e.g., timers, I/O callbacks) to ensure non-blocking execution.
+
+Thread Pool...
+Handles blocking tasks (e.g., file system operations, bcrypt hashing) by delegating them to a pool of threads.
+Default size: 4 threads, meaning up to 4 blocking tasks can be processed simultaneously.
+Why Needed: Prevents blocking of the main event loop, which runs JavaScript.
+
+Timers...
+Implements setTimeout, setInterval, and similar functions.
+I/O Operations
+
+Handles network I/O and file system I/O in an efficient, platform-independent way.
+How libuv Handles Tasks
+Non-blocking tasks (e.g., HTTP requests):
+
+Handled by the event loop using OS features like epoll, kqueue, or IOCP.
+These tasks do not block the main thread.
+Blocking tasks (e.g., file system, bcrypt):
+
+Sent to the thread pool to avoid blocking the event loop.
+The main thread remains responsive while the task is processed in a separate thread.
+Thread Pool:
+
+By default, contains 4 threads. This means 4 tasks can execute simultaneously.
+Configurable via the UV_THREADPOOL_SIZE environment variable (up to 128).
+
+======================================
+Why libuv Matters?
+It enables Node.js to handle thousands of concurrent connections efficiently.
+Balances non-blocking async tasks (via event loop) with blocking operations (via thread pool).
+
+=====================================
+Note:- this is in short...
+"By default, libuv provides 4 threads, meaning 4 tasks are executed concurrently in the thread pool."
+"The thread pool is specifically used for synchronous tasks like file operations or bcrypt hashing, which block code execution."
+"libuv was introduced to handle these blocking tasks efficiently, ensuring the main thread stays free for other operations."
+
+===============================================
+Key Takeaways
+libuv is the backbone of Node.js’s async, non-blocking architecture.
+The event loop manages lightweight, non-blocking tasks.
+The thread pool handles heavy, blocking tasks.
+It ensures Node.js can perform well even under high loads.
