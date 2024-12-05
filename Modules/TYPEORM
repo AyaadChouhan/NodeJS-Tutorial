@@ -1,0 +1,105 @@
+TypeORM is an Object Relational Mapper (ORM) for TypeScript and JavaScript that allows you to interact with databases using models and relationships instead of raw SQL queries.
+
+Core Features
+Works with multiple databases: MySQL, PostgreSQL, SQLite, MariaDB, MongoDB, etc.
+Supports TypeScript and JavaScript.
+Provides both Active Record and Data Mapper patterns.
+Built-in support for relations (One-to-One, One-to-Many, Many-to-Many).
+Schema migrations for database version control.
+
+# Install TypeORM and database driver
+
+npm install typeorm reflect-metadata mysql2
+
+# (Optional for TypeScript users)
+
+npm install -D @types/node typescript ts-node
+
+===================DATASOURCE=========================
+
+import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { User } from "./entity/User";
+
+export const AppDataSource = new DataSource({
+type: "mysql",
+host: "localhost",
+port: 3306,
+username: "root",
+password: "password",
+database: "test_db",
+synchronize: true, // Auto-sync entities (set false in production)
+logging: true,
+entities: [User],
+migrations: [],
+subscribers: [],
+});
+
+=====================Entities==========================
+
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+
+@Entity()
+export class User {
+@PrimaryGeneratedColumn()
+id: number;
+
+@Column()
+name: string;
+
+@Column()
+age: number;
+}
+
+=======================INDEX.TS========================
+import { UrlSortner } from "./Entity/Url-Entities";
+import { AppDataSource } from "./data-source";
+import express from "express";
+import { UserServices } from "./service/service";
+
+const app = express();
+app.use(bodyParser.json());
+const userservices = new UserServices();
+
+const urlRepository = AppDataSource.getRepository(UrlSortner);
+
+AppDataSource.initialize()
+.then(() => {
+console.log("DataBase is Connected");
+
+    app.get("/getAll", async (_req, res) => {
+      const users = await userservices.getAllUser();
+      res.json(users);
+    });
+
+    app.post("/addUser", async (req, res) => {
+      const user = await userservices.createUser(req.body);
+      res.json(user);
+    });
+
+    app.delete("/delete/:id", async (req, res) => {
+      await userservices.deleteUser(Number(req.params.id));
+      res.send("user id deleted");
+    });
+
+    app.put("/update/:id", async (req, res) => {
+      const user = await userservices.updateUser(
+        Number(req.params.id),
+        req.body
+      );
+      res.json(user);
+    });
+
+    app.get("/getUser/:id", (req, res) => {
+      res.json(userservices.getUserById(Number(req.params.id)));
+    });
+
+    app.listen(3000, () => {
+      console.log("Server running on port 3000");
+    });
+
+})
+
+.catch((error) => {
+console.error("Error connecting to the database", error);
+});
