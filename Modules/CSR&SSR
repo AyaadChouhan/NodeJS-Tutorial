@@ -1,0 +1,54 @@
+CLIENT SIDE RENDERING-[CSR] AND SERVER SIDE RENDERING-[SSR]
+BOTH ARE RENDERING WEB PAGES IN WEB DEVELOPMENT.
+
+Node.js and Its Role..........
+Node.js is a server-side runtime environment. It is not a client-side language. It allows you to execute JavaScript on the server to handle backend tasks like:
+Processing HTTP requests.
+Communicating with databases.
+Serving APIs to client-side applications.
+
+===================================================
+
+Client-Side Rendering (CSR)
+In CSR, the client-side application (built using frameworks like React, Angular, or plain vanilla JavaScript) handles rendering.
+
+Loads an HTML page (often minimal, with no content).
+Executes the JavaScript sent by the server.
+Dynamically updates the DOM with fetched data.
+This is where tools like fetch or axios are used to make API calls to a backend server (e.g., a Node.js server). The server processes the data (e.g., interacting with a database) and sends it back to the client.
+
+Example Flow for CSR:
+
+User opens a React app.
+React app makes an API call (GET /api/users).
+Node.js server (backend) handles the request, fetches data from a database, and returns a JSON response.
+React app renders the data in the browser.
+
+====================================================
+
+Server-Side Rendering (SSR)......
+
+In SSR, the server (e.g., a Node.js server) is responsible for generating a full HTML page with data pre-populated.
+
+The client receives a fully-rendered HTML page directly from the server.
+
+This is useful for:
+Faster initial page loads.
+Search Engine Optimization (SEO).
+
+Built with Node.js, Nest.js, Express.js, or similar frameworks.
+
+Handles:
+Business logic.
+Data processing.
+Interactions with databases (MySQL, MongoDB, etc.).
+API responses to the client.
+
+Example tools:
+Express to create APIs.
+CORS middleware to allow cross-origin requests.
+
+=======================================================
+Which One to Choose?
+CSR: When you need dynamic, highly interactive SPAs and don’t prioritize SEO initially.
+SSR: When you need fast initial loads, better SEO, and less dependency on the client's processing power.
