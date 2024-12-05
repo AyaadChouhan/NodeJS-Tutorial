@@ -1,0 +1,91 @@
+What is a URL Shortener?
+A URL shortener converts long URLs into shorter, easily shareable links.
+The shorter URL redirects users to the original long URL.
+
+==================================================
+Core Features of a URL Shortener....
+
+Generate Short URL
+Accept a long URL as input.
+Generate a unique short code for the URL.
+
+Redirect to Original URL
+When a user visits the short URL, redirect them to the original long URL.
+
+Store URL Mappings
+Maintain a mapping between short URLs and their corresponding long URLs in a database.
+
+=======================================================
+
+cmd
+mkdir url-shortener
+cd url-shortener
+npm init -y
+npm install express body-parser nanoid
+
+==============Urlentities.ts========================
+
+import { Column } from "typeorm";
+import { PrimaryGeneratedColumn } from "typeorm";
+import { Entity } from "typeorm";
+@Entity()
+export class UrlSortner {
+@PrimaryGeneratedColumn()
+id: number;
+
+@Column()
+url: string;
+
+@Column({ unique: true })
+shortCode: string;
+}
+
+==============index.ts========================
+import { UrlSortner } from "./Entity/Url-Entities";
+import { AppDataSource } from "./data-source";
+import express from "express";
+import bodyParser from "body-parser";
+import { nanoid } from "nanoid";
+
+const app = express();
+app.use(bodyParser.json());
+
+const urlRepository = AppDataSource.getRepository(UrlSortner);
+
+AppDataSource.initialize()
+.then(() => {
+console.log("DataBase is Connected");
+
+    app.post("/shorten", async (req, res) => {
+      const { url } = req.body; //urlRepository
+
+      const shortCode = nanoid(Number(req.body.shortCode));
+      const newUrl = urlRepository.create({ url, shortCode });
+      await urlRepository.save(newUrl);
+      res.json(newUrl);
+    });
+
+    app.get("/urls", async (_req, res) => {
+      const getAllData = await urlRepository.find();
+      if (!getAllData) {
+        throw new Error("no url found");
+      }
+      res.json(getAllData);
+    });
+
+
+    app.listen(3000, () => {
+      console.log("Server running on port 3000");
+    });
+
+})
+
+.catch((error) => {
+console.error("Error connecting to the database", error);
+});
+
+==========================================
+
+Node.js: Runs the server.
+Express.js: Handles routes and requests.
+Nanoid: Creates unique short codes.
