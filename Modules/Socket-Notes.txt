@@ -1,0 +1,47 @@
+In real-time web applications using Socket.io, the .emit() and .on() methods are used for communication between the client and server. Here's a breakdown of their purpose:
+
+1. .emit() Method (Sending Data)
+Purpose: The .emit() method is used to send a message from one side (either the server or client) to the other side (server or client).
+How it works:
+On the server side, you can use .emit() to send data to all connected clients or a specific client.
+On the client side, you use .emit() to send data to the server.
+Example:
+Server emits to clients:
+
+
+io.emit('question', 'What is 5 + 3?'); // Sends 'question' event to all connected clients
+Client emits to the server:
+
+
+socket.emit('answer', '8'); // Sends 'answer' event with the user's answer to the server
+2. .on() Method (Receiving Data)
+Purpose: The .on() method is used to listen for a specific event, so when that event happens, the function (callback) is triggered.
+How it works:
+On the server side, you can use .on() to listen for events sent by clients and take actions based on those events.
+On the client side, you can use .on() to listen for events sent by the server and react accordingly.
+Example:
+Server listens for client response:
+
+
+socket.on('answer', (data) => {
+  console.log(data.answer); // Logs the answer sent by a client
+});
+Client listens for server message:
+
+
+socket.on('question', (question) => {
+  console.log(question); // Displays the question received from the server
+});
+
+.emit() is used to send data (fire an event).
+.on() is used to receive data (listen for an event).
+These methods are crucial for enabling real-time communication between the server and client, allowing your app to react to events as they happen (e.g., sending and receiving answers in a quiz application).\
+
+
+
+
+========================================
+ git status 
+ git add . // for select all files
+ git commit -m 'Fullstack project'
+ git push origin main
